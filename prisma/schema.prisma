@@ -54,6 +54,7 @@ model Company {
   direction     String
   createdAt     DateTime? @default(now())
   emailVerified DateTime?
+  password      String
   sessions      Session[]
   workers       Worker[]
 }

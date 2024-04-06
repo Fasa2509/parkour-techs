@@ -6,14 +6,22 @@
 // import Link from "next/link";
 
 import { ConfirmationEmail } from "@/components/emails/ConfirmationEmail";
+import { getUserAuth } from "@/lib/auth/utils";
 
-export default function Page() {
+export default async function Page() {
+  const session = await getUserAuth();
+
   return (
-    <ConfirmationEmail companyName="Mi Company" token="123asd" />
+    <section>
+      {
+        JSON.stringify(session)
+      }
+    </section>
   )
 }
 
 
+// <ConfirmationEmail companyName="Mi Company" token="123asd" />
 
 
 

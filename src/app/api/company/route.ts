@@ -1,3 +1,5 @@
+import bcrypt from "bcrypt";
+
 import { ConfirmationEmail } from "@/components/emails/ConfirmationEmail";
 import { signToken } from "@/lib/JWT";
 import { ApiResponse, CustomResponse } from "@/lib/api/Api";
@@ -22,8 +24,14 @@ export const POST = async (req: Request) => {
 
         if (companyExists) throw new ValidationError("Ya existe una compañía con ese correo", 400);
 
+        const salt = await bcrypt.genSalt(10);
+        const userPassword = await bcrypt.hash(body.password, salt);
+
         const company = await DbClient.company.create({
-            data: body,
+            data: {
+                ...body,
+                password: userPassword
+            }
         });
 
         const token = signToken<Pick<TCompany, 'id' | 'email' | 'name'>>({ id: company.id, email: company.email, name: company.name });

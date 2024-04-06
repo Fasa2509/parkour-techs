@@ -1,21 +1,19 @@
 "use client";
 
+import LoginForm from "@/components/auth/LoginForm";
 import { signIn } from "next-auth/react";
 
 const Page = () => {
   return (
-    <main className="bg-popover max-w-lg mx-auto my-4 rounded-lg p-10">
-      <h1 className="text-2xl font-bold text-center">
-        Sign in to your account
-      </h1>
-      <div className="mt-4">
-        <button
-          onClick={() => signIn(undefined, { callbackUrl: "/dashboard" })}
-          className="w-full bg-primary text-primary-foreground text-center hover:opacity-90 font-medium px-4 py-2 rounded-lg block"
-        >
-          Sign In
-        </button>
-      </div>
+    // <main className="bg-popover max-w-lg mx-auto my-4 rounded-lg p-10">
+    <main className="bg-popover my-4 mx-8 p-6 flex gap-x-8">
+      <section className="flex-1 hidden md:block">
+        <h1 className="from-neutral-700 text-4xl font-bold">
+          Parkour Techs, manejo y control de equipos
+        </h1>
+        <p className="from-neutral-500 text-xl mt-4">Maneja todo tu equipo o empresa desde un solo sitio, a un solo click {";)"}</p>
+      </section>
+      <LoginForm />
     </main>
   );
 };

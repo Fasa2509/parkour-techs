@@ -8,6 +8,7 @@ export const companySchema = z.object({
   direction: z.string(),
   createdAt: z.date().nullish(),
   emailVerified: z.date().nullish(),
+  password: z.string(),
 })
 
 export interface CompleteCompany extends z.infer<typeof companySchema> {

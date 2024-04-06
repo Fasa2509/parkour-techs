@@ -8,4 +8,4 @@ services:
     restart: always
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=12345678
+      - POSTGRES_PASSWORD=$DB_PASSWORD
