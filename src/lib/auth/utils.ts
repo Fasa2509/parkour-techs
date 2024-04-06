@@ -1,24 +1,25 @@
+import { getServerSession, NextAuthOptions, Session } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { Adapter } from "next-auth/adapters";
+import { PrismaAdapter } from "@auth/prisma-adapter"
 import bcrypt from "bcrypt";
 import { z } from "zod";
 
 import { DbClient } from "@/lib/db/index";
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import { getServerSession, NextAuthOptions } from "next-auth";
-import { Adapter } from "next-auth/adapters";
 import { redirect } from "next/navigation";
-import { TCompany } from "../types/Company";
-import CredentialsProvider from "next-auth/providers/credentials";
 import { isValidPassword } from "../validations";
+import { CompleteUser } from "prisma/zod/user";
 
 declare module "next-auth" {
   interface Session {
-    user: TCompany;
+    user: CompleteUser;
   }
 }
 
 export type AuthSession = {
   session: {
-    user: TCompany;
+    user: CompleteUser;
   } | null;
 };
 
@@ -26,58 +27,67 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(DbClient) as Adapter,
   callbacks: {
     session: ({ session, user }) => {
-      console.log({ session })
-      console.log({ user })
       session.user.id = user.id
-      // session.user.id = user.id;
+      // @ts-ignore
+      session.user.direction = user.direction
+      // @ts-ignore
+      session.user.createdAt = user.createdAt
+      session.user.emailVerified = user.emailVerified
+
       return session;
     },
   },
   providers: [
-    CredentialsProvider({
-      name: 'Custom Login',
-      credentials: {
-        email: { label: 'Correo', type: 'email', placeholder: 'correo@google.com' },
-        password: { label: 'Contraseña', type: 'password', placeholder: 'Contraseña' },
-      },
-      async authorize(credentials) {
-        if (!z.string().email().safeParse(credentials?.email || '').success || !isValidPassword(credentials?.password || '')) return null;
+    // CredentialsProvider({
+    //   name: 'Custom Login',
+    //   credentials: {
+    //     email: { label: 'Correo', type: 'email', placeholder: 'correo@google.com' },
+    //     password: { label: 'Contraseña', type: 'password', placeholder: 'Contraseña' },
+    //   },
+    //   async authorize(credentials) {
+    //     if (!z.string().email().safeParse(credentials?.email || '').success || !isValidPassword(credentials?.password || '')) return null;
 
-        const company = await DbClient.company.findUnique({
-          where: {
-            email: credentials?.email.toLocaleLowerCase(),
-          },
-          include: {
-            workers: {
-              take: 5,
-            }
-          }
-        });
+    //     const user = await DbClient.user.findUnique({
+    //       where: {
+    //         email: credentials?.email.toLocaleLowerCase(),
+    //       },
+    //       include: {
+    //         accounts: true,
+    //         sessions: true,
+    //         workers: true,
+    //       }
+    //     });
 
-        if (!company || !company.emailVerified) return null;
-        // if (!company) return null;
+    //     if (!user || !user.emailVerified) return null;
 
-        const checkPassword = await bcrypt.compare(credentials!.password, company.password);
+    //     const checkPassword = await bcrypt.compare(credentials!.password, user.password);
 
-        if (!checkPassword) return null;
+    //     if (!checkPassword) return null;
 
-        const { password, ...companyInfo } = company;
+    //     const { password, ...userInfo } = user;
 
-        return companyInfo;
-      },
-    }),
+    //     console.log(userInfo)
+
+    //     return userInfo;
+    //   },
+    // }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID || '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+      allowDangerousEmailAccountLinking: true,
+    })
   ],
+  secret: process.env.NEXTAUTH_SECRET
 };
 
 
-export const getUserAuth = async (): Promise<AuthSession> => {
+export const getUserAuth = async (): Promise<Session | null> => {
   const session = await getServerSession(authOptions);
-  return { session };
+  return session;
 };
 
-export const checkAuth = async (): Promise<AuthSession> => {
-  const { session } = await getUserAuth();
+export const checkAuth = async (): Promise<Session | null> => {
+  const session = await getUserAuth();
   if (!session) return redirect("/sign-in");
-  return { session };
+  return session;
 };
-

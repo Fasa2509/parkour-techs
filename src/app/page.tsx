@@ -5,24 +5,46 @@
  */
 // import Link from "next/link";
 
-import { ConfirmationEmail } from "@/components/emails/ConfirmationEmail";
-import { getUserAuth } from "@/lib/auth/utils";
+// 'use client'
+
+// import { SessionProvider, useSession } from "next-auth/react"
+// import Provider from "@/lib/auth/Provider";
+// import { Section } from "@/components/ui/Section";
+
+// export default function Page() {
+
+//   return (
+//     <Provider>
+//       <section>
+//         <Section />
+//       </section>
+//     </Provider>
+//   )
+// }
+import { getServerSession } from "next-auth";
+import { authOptions, getUserAuth } from "@/lib/auth/utils";
+import AuthProvider from "@/lib/auth/Provider";
+import { Section } from "@/components/ui/Section";
+import { OtherSection } from "@/components/ui/OtherSection";
 
 export default async function Page() {
+  // const session = await getServerSession();
   const session = await getUserAuth();
+
+  console.log(session)
 
   return (
     <section>
-      {
-        JSON.stringify(session)
-      }
+      Hola mundo otra vez
+      <div>
+        {
+          JSON.stringify(session)
+        }
+      </div>
+      <OtherSection />
     </section>
   )
 }
-
-
-// <ConfirmationEmail companyName="Mi Company" token="123asd" />
-
 
 
 // export default function LandingPage() {

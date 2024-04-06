@@ -25,8 +25,14 @@ const LoginForm = () => {
         const callbackUrl = (page && page.startsWith('/')) ? page : '/';
         console.log({ checked })
 
-        setTimeout(() => signIn("credentials", { email, password, callbackUrl }), 5000)
+        await signIn("credentials", { email, password, callbackUrl });
     };
+
+    const googleLoging = async () => {
+        const page = searchParams.get("p");
+        const callbackUrl = (page && page.startsWith('/')) ? page : '/';
+        await signIn();
+    }
 
     return (
         <div className="flex-1">
@@ -61,6 +67,9 @@ const LoginForm = () => {
                 </div>
                 <div className="relative h-11 w-full min-w-[200px]">
                     <input type="submit" placeholder="Clave" className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" />
+                </div>
+                <div className="relative h-11 w-full min-w-[200px]">
+                    <button type="button" onClick={googleLoging}>Entrar con Google</button>
                 </div>
             </form>
         </div>

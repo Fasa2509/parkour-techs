@@ -13,7 +13,7 @@ export const POST = async (req: Request) => {
 
         if (!z.string().email().safeParse(body.email || '').success || !isValidPassword(body.password || '')) throw new ValidationError("La información suministrada no es válida", 400);
 
-        const company = await DbClient.company.findUnique({
+        const user = await DbClient.user.findUnique({
             where: {
                 email: body.email.toLocaleLowerCase(),
             },
@@ -22,9 +22,9 @@ export const POST = async (req: Request) => {
             }
         });
 
-        if (!company) throw new ValidationError("No se encontró usuario por ese correo", 404);
+        if (!user) throw new ValidationError("No se encontró usuario por ese correo", 404);
 
-        const checkPassword = await bcrypt.compare(body.password, company.password);
+        const checkPassword = await bcrypt.compare(body.password, user.password);
 
         if (!checkPassword) throw new ValidationError("La clave es incorrecta", 401);
 
