@@ -1,10 +1,9 @@
-import { getServerSession } from "next-auth";
 import { CompleteWorker } from "prisma/zod/worker";
 
-import { ApiResponse, ApiResponsePayload, CustomResponse, ZApiPagination } from "@/lib/api/Api";
+import { ApiResponsePayload, CustomResponse, ZApiPagination } from "@/lib/api/Api";
 import { getUserAuth } from "@/lib/auth/utils";
 import { AuthError, EndpointErrorHandler, ValidationError } from "@/lib/errors";
-import { TValidPhones, ValidPhones, ZNewWorker, ZUpdateWorker } from "@/lib/types/Worker";
+import { TValidPhones, ValidPhones, ZNewWorker } from "@/lib/types/Worker";
 import { DbClient } from "@/lib/db";
 
 
