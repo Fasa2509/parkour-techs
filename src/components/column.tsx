@@ -17,14 +17,20 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 import { ValidStatus, WorkerStatus } from "@/lib/types/Worker";
 import { toast } from "sonner";
 import { UpdateWorkerForm } from "./forms/UpdateWorkerForm";
 
 
-export const columns: ColumnDef<Omit<CompleteWorker, 'user'>>[] = [
+const formatter = new Intl.NumberFormat("en-US", {
+    currency: "USD",
+    style: "currency"
+});
+
+
+export const columns: ColumnDef<Omit<CompleteWorker, 'user' | 'userId'>>[] = [
     {
         accessorKey: "id",
         header: "Actualizar",
@@ -63,16 +69,45 @@ export const columns: ColumnDef<Omit<CompleteWorker, 'user'>>[] = [
     },
     {
         accessorKey: "email",
-        header: "Email",
-
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Email
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
     },
     {
         accessorKey: "name",
-        header: "Nombre"
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Nombre
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
     },
     {
         accessorKey: "ci",
-        header: "Cédula"
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Cédula
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
     },
     {
         accessorKey: "phone",
@@ -80,7 +115,17 @@ export const columns: ColumnDef<Omit<CompleteWorker, 'user'>>[] = [
     },
     {
         accessorKey: "status",
-        header: "Estado",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Estado
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
             const id = row.getValue("id") as string;
             const status = row.getValue("status") as string;
@@ -112,7 +157,22 @@ export const columns: ColumnDef<Omit<CompleteWorker, 'user'>>[] = [
     },
     {
         accessorKey: "salary",
-        header: "Salario",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Salario
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => {
+            let salary = formatter.format(row.getValue("salary"))
+
+            return <span className="font-bold">{salary}</span>
+        }
     },
     {
         accessorKey: "direction",

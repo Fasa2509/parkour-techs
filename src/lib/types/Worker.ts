@@ -33,7 +33,7 @@ export type TValidPhones = keyof typeof ValidPhones;
 
 export const ZNewWorker = z.object({
     email    : z.string({ required_error: 'El correo es requerido', invalid_type_error: 'El correo debe ser texto' }).trim().toLowerCase().email('El correo no es válido'),
-    name     : z.string({ required_error: 'El nombre es requerido', invalid_type_error: 'El nombre debe ser texto' }).trim().min(2, 'El nombre es muy corto').max(64, 'El nombre es muy largo').regex(/[a-zA-ZáéíóúÁÉÍÓÚ ]/, 'El nombre tiene caracteres inválidos'),
+    name     : z.string({ required_error: 'El nombre es requerido', invalid_type_error: 'El nombre debe ser texto' }).trim().min(2, 'El nombre es muy corto').max(64, 'El nombre es muy largo').regex(/^[a-zA-ZáéíóúÁÉÍÓÚ ]+$/, 'El nombre tiene caracteres inválidos'),
     ci       : z.number({ required_error: 'La ci es obligatoria', invalid_type_error: 'La ci debe ser un número' }).gt(1_000_000, 'La ci debe ser mayor a 1.000.000'),
     phone    : z.string({ required_error: "El número de teléfono es requerido", invalid_type_error: 'El número de teléfono debe ser un texto'}).length(11, 'El número de teléfono no parece ser válido'),
     direction: z.string({ required_error: 'La dirección es obligatoria', invalid_type_error: 'La dirección debe ser un texto' }),
@@ -46,7 +46,7 @@ export type TNewWorker = z.infer<typeof ZNewWorker>;
 
 export const ZUpdateWorker = z.object({
     email    : z.string({ invalid_type_error: 'El correo debe ser texto' }).trim().toLowerCase().email('El correo no es válido').optional(),
-    name     : z.string({ invalid_type_error: 'El nombre debe ser texto' }).trim().min(2, 'El nombre es muy corto').max(64, 'El nombre es muy largo').regex(/[a-zA-ZáéíóúÁÉÍÓÚ ]/, 'El nombre tiene caracteres inválidos').optional(),
+    name     : z.string({ invalid_type_error: 'El nombre debe ser texto' }).trim().min(2, 'El nombre es muy corto').max(64, 'El nombre es muy largo').regex(/^[a-zA-ZáéíóúÁÉÍÓÚ ]+$/, 'El nombre tiene caracteres inválidos').optional(),
     ci       : z.number({ invalid_type_error: 'La ci debe ser un número' }).gt(1_000_000, 'La ci debe ser mayor a 1.000.000').optional(),
     phone    : z.string({ required_error: "El número de teléfono es requerido", invalid_type_error: 'El número de teléfono debe ser un texto'}).length(11, 'El número de teléfono no parece ser válido').optional(),
     direction: z.string({ invalid_type_error: 'La dirección debe ser un texto' }).optional(),
@@ -57,7 +57,7 @@ export const ZUpdateWorker = z.object({
 
 export type TUpdateWorker = z.infer<typeof ZUpdateWorker>;
 
-export const WorkerSeed: Array<TNewWorker> = [
+export const WorkerSeed: Array<TNewWorker & {createdAt: Date}> = [
     {
         email: "tunankam@jovipu.ve",
         name: "Robert Barton",
@@ -67,6 +67,7 @@ export const WorkerSeed: Array<TNewWorker> = [
         salary: 5823,
         hours: 60,
         status: "active",
+        createdAt: new Date("09/07/2024")
     },
     {
         email: "pudo@sagego.ax",
@@ -76,7 +77,8 @@ export const WorkerSeed: Array<TNewWorker> = [
         direction: "St. Barthélemy",
         salary: 3762,
         hours: 172,
-        status: "active",
+        status: "inactive",
+        createdAt: new Date("04/27/2021")
     },
     {
         email: "wopmus@otfehzur.ao",
@@ -87,6 +89,7 @@ export const WorkerSeed: Array<TNewWorker> = [
         salary: 4583,
         hours: 16,
         status: "active",
+        createdAt: new Date("10/11/2020")
     },
     {
         email: "so@um.jo",
@@ -96,7 +99,8 @@ export const WorkerSeed: Array<TNewWorker> = [
         direction: "Mongolia",
         salary: 6997,
         hours: 70,
-        status: "active",
+        status: "inactive",
+        createdAt: new Date("09/13/2023")
     },
     {
         email: "vezi@zivustu.tl",
@@ -107,6 +111,7 @@ export const WorkerSeed: Array<TNewWorker> = [
         salary: 2127,
         hours: 81,
         status: "active",
+        createdAt: new Date("09/30/2022")
     },
     {
         email: "pedac@niip.gg",
@@ -117,6 +122,7 @@ export const WorkerSeed: Array<TNewWorker> = [
         salary: 762,
         hours: 64,
         status: "active",
+        createdAt: new Date("07/19/2019")
     },
     {
         email: "fet@nifhiski.tr",
@@ -127,6 +133,7 @@ export const WorkerSeed: Array<TNewWorker> = [
         salary: 619,
         hours: 126,
         status: "active",
+        createdAt: new Date("10/24/2022")
     },
     {
         email: "pizjih@wusokvob.gs",
@@ -136,7 +143,8 @@ export const WorkerSeed: Array<TNewWorker> = [
         direction: "Romania",
         salary: 6434,
         hours: 15,
-        status: "active",
+        status: "vacations",
+        createdAt: new Date("06/07/2021")
     },
     {
         email: "lavegnup@coz.gi",
@@ -146,7 +154,8 @@ export const WorkerSeed: Array<TNewWorker> = [
         direction: "Ceuta & Melilla",
         salary: 2770,
         hours: 133,
-        status: "active",
+        status: "inactive",
+        createdAt: new Date("04/27/2022")
     },
     {
         email: "wuwigo@namur.nz",
@@ -157,6 +166,7 @@ export const WorkerSeed: Array<TNewWorker> = [
         salary: 2405,
         hours: 58,
         status: "active",
+        createdAt: new Date("01/25/2023")
     },
     {
         email: "zevfek@namtav.ua",
@@ -167,6 +177,7 @@ export const WorkerSeed: Array<TNewWorker> = [
         salary: 6280,
         hours: 29,
         status: "active",
+        createdAt: new Date("05/05/2023")
     },
     {
         email: "wavujwew@devcaz.ss",
@@ -177,6 +188,7 @@ export const WorkerSeed: Array<TNewWorker> = [
         salary: 5249,
         hours: 177,
         status: "active",
+        createdAt: new Date("08/30/2022")
     },
     {
         email: "uku@od.tw",
@@ -186,7 +198,8 @@ export const WorkerSeed: Array<TNewWorker> = [
         direction: "Guam",
         salary: 9650,
         hours: 71,
-        status: "active",
+        status: "vacations",
+        createdAt: new Date("06/23/2023")
     },
     {
         email: "lef@raok.gt",
@@ -196,7 +209,8 @@ export const WorkerSeed: Array<TNewWorker> = [
         direction: "Norway",
         salary: 4289,
         hours: 36,
-        status: "active",
+        status: "inactive",
+        createdAt: new Date("05/14/2023")
     },
     {
         email: "leinilo@wiskuso.co",
@@ -207,6 +221,7 @@ export const WorkerSeed: Array<TNewWorker> = [
         salary: 5856,
         hours: 40,
         status: "active",
+        createdAt: new Date("09/24/2023")
     },
     {
         email: "zomle@fawto.tc",
@@ -217,6 +232,7 @@ export const WorkerSeed: Array<TNewWorker> = [
         salary: 1162,
         hours: 172,
         status: "active",
+        createdAt: new Date("07/18/2023")
     },
     {
         email: "surog@nag.bb",
@@ -226,6 +242,7 @@ export const WorkerSeed: Array<TNewWorker> = [
         direction: "Tokelau",
         salary: 4201,
         hours: 62,
-        status: "active",
+        status: "vacations",
+        createdAt: new Date("04/19/2021")
     },
 ]

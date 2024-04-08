@@ -1,10 +1,11 @@
+import { CompleteWorker } from "prisma/zod/worker";
+import { PAGINATION_LIMIT } from "@/lib/api/Api";
 import { DbClient } from "..";
 import { getUserAuth } from "@/lib/auth/utils";
 import { AuthError } from "@/lib/errors";
-import { CompleteWorker } from "prisma/zod/worker";
 
 
-export const backGetWorkers = async (): Promise<Omit<CompleteWorker, 'user'>[] | undefined> => {
+export const backGetWorkers = async (): Promise<Omit<CompleteWorker, 'user' | 'userInfo'>[] | undefined> => {
     try {
         const session = await getUserAuth();
 
@@ -14,7 +15,10 @@ export const backGetWorkers = async (): Promise<Omit<CompleteWorker, 'user'>[] |
             where: {
                 userId: session.user.id,
             },
-            take: 15,
+            take: 20,
+            orderBy: {
+                createdAt: "desc"
+            }
         });
 
         return workers

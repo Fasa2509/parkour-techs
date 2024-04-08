@@ -42,3 +42,5 @@ export const ZApiPagination = z.object({
 });
 
 export type ApiPagination = z.infer<typeof ZApiPagination>;
+
+export const PAGINATION_LIMIT = 10;

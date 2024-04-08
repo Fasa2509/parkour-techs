@@ -1,5 +1,5 @@
 "use client"
-import { ChangeEvent, FC, FormEvent, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useContext, useState } from "react";
 
 import { TUpdateWorker, ValidStatus } from "@/lib/types/Worker";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
@@ -7,6 +7,7 @@ import { Button } from "../ui/button";
 import { toast } from "sonner";
 import { CompleteWorker } from "prisma/zod/worker";
 import { updateWorker } from "@/lib/db/methods/dbWorker";
+import { WorkerContext } from "@/lib/context/WorkerContext";
 
 interface Props {
     workerInfo: Omit<CompleteWorker, 'user' | 'userId'>;
@@ -15,6 +16,8 @@ interface Props {
 export const UpdateWorkerForm: FC<Props> = ({ workerInfo }) => {
 
     const [formState, setFormState] = useState<TUpdateWorker>(workerInfo);
+
+    const { workers, setWorkers } = useContext(WorkerContext);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -31,6 +34,7 @@ export const UpdateWorkerForm: FC<Props> = ({ workerInfo }) => {
         const res = await updateWorker(workerInfo.id, formState);
 
         toast(res.message[0]);
+        !res.error && setWorkers((prevState) => prevState.map((worker) => (worker.id !== workerInfo.id) ? worker : res.payload));
     };
 
     return (
@@ -105,10 +109,10 @@ export const UpdateWorkerForm: FC<Props> = ({ workerInfo }) => {
                 <label>Estado</label>
                 <div className="">
                     <DropdownMenu>
-                        <DropdownMenuTrigger className="border-green-200">{formState.status}</DropdownMenuTrigger>
+                        <DropdownMenuTrigger className="border-green-500 border-2 bg-white px-2 py-1 rounded-sm">{formState.status}</DropdownMenuTrigger>
                         <DropdownMenuContent>
                             {
-                                ValidStatus.map((status) => <DropdownMenuItem onClick={() => setFormState((prevState) => ({ ...prevState, status }))}>{status}</DropdownMenuItem>)
+                                ValidStatus.map((status) => <DropdownMenuItem className={`px-2 py-1 bg-white outline-green-300 hover:bg-gray-200/80 ${formState.status === status ? "bg-green-400" : ""}`} onClick={() => setFormState((prevState) => ({ ...prevState, status }))}>{status}</DropdownMenuItem>)
                             }
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -163,9 +167,9 @@ export const UpdateWorkerForm: FC<Props> = ({ workerInfo }) => {
 
             <div className="relative h-11 w-full min-w-[200px] mt-4">
                 <Button type="submit"
-                    className="w-full font-bold text-lg hover:bg-white hover:text-green-300 bg-green-300 text-white"
+                    className="w-full border-2 border-transparent hover:border-green-300 text-lg hover:bg-white hover:text-green-300 bg-green-300 text-white"
                 >
-                    Enviar
+                    Actualizar trabajador
                 </Button>
                 {/* <input type="submit" placeholder="Clave" className="w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" /> */}
             </div>

@@ -1,11 +1,12 @@
 "use client"
-import { ChangeEvent, FC, FormEvent, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useContext, useState } from "react";
 
 import { TNewWorker, TUpdateWorker, ValidStatus } from "@/lib/types/Worker";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Button } from "../ui/button";
 import { createWorker } from "@/lib/db/methods/dbWorker";
 import { toast } from "sonner";
+import { WorkerContext } from "@/lib/context/WorkerContext";
 
 const formInitialState: TNewWorker & { lastname: string } = {
     email: "",
@@ -23,6 +24,8 @@ export const CreateWorkerForm: FC = () => {
 
     const [formState, setFormState] = useState<TNewWorker & { lastname: string }>(formInitialState);
 
+    const { setWorkers } = useContext(WorkerContext);
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
@@ -34,10 +37,11 @@ export const CreateWorkerForm: FC = () => {
         });
 
         toast(res.message[0]);
+        !res.error && setWorkers((prevState) => [res.payload, ...prevState]);
     };
 
     return (
-        <form className="flex flex-col gap-6 rounded-md bg-white p-4 md:py-6 md:px-8 flex-1 max-w-[600px]" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-6 mx-auto rounded-md bg-white p-4 md:py-6 md:px-8 flex-1 max-w-[600px]" onSubmit={handleSubmit}>
             <h3 className="text-2xl font-bold text-center">
                 Crear trabajador
             </h3>
@@ -119,14 +123,14 @@ export const CreateWorkerForm: FC = () => {
                 </label>
             </div>
 
-            <div className="relative h-11 w-full min-w-[200px] flex content-end gap-4">
-                <label>Estado</label>
-                <div className="">
+            <div className="relative h-11 w-full min-w-[200px] flex content-center gap-4">
+                <label className="self-center">Estado</label>
+                <div className="self-center">
                     <DropdownMenu>
-                        <DropdownMenuTrigger className="border-green-200">{formState.status}</DropdownMenuTrigger>
+                        <DropdownMenuTrigger className="border-green-500 border-2 bg-white px-2 py-1 rounded-sm">{formState.status}</DropdownMenuTrigger>
                         <DropdownMenuContent>
                             {
-                                ValidStatus.map((status) => <DropdownMenuItem onClick={() => setFormState((prevState) => ({ ...prevState, status }))}>{status}</DropdownMenuItem>)
+                                ValidStatus.map((status) => <DropdownMenuItem className={`px-2 py-1 bg-white outline-green-300 hover:bg-gray-200/80 ${formState.status === status ? "bg-green-400" : ""}`} onClick={() => setFormState((prevState) => ({ ...prevState, status }))}>{status}</DropdownMenuItem>)
                             }
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -172,7 +176,7 @@ export const CreateWorkerForm: FC = () => {
                     rows={4}
                     className="resize-none w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                     required
-                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setFormState((prevState) => ({ ...prevState, salary: Number(e.target.value) }))}
+                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setFormState((prevState) => ({ ...prevState, direction: e.target.value }))}
                 >{formState.direction}</textarea>
                 <label className="after:content[' '] pointer-events-none absolute left-0  -top-2.5 flex h-full w-full select-none !overflow-visible truncate text-sm font-normal leading-tight text-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-gray-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-sm peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:after:scale-x-100 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                     Dirección
@@ -181,11 +185,10 @@ export const CreateWorkerForm: FC = () => {
 
             <div className="relative h-11 w-full min-w-[200px] mt-4">
                 <Button type="submit"
-                    className="w-full font-bold text-lg hover:bg-white hover:text-green-300 bg-green-300 text-white"
+                    className="w-full border-2 border-transparent hover:border-green-300 text-lg hover:bg-white hover:text-green-300 bg-green-300 text-white"
                 >
-                    Enviar
+                    Crear trabajador
                 </Button>
-                {/* <input type="submit" placeholder="Clave" className="w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" /> */}
             </div>
         </form>
     )

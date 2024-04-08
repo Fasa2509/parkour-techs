@@ -59,14 +59,13 @@ export const POST = async (req: Request) => {
             }
         });
 
-        if (!workerExists) throw new ValidationError("Ya existe un trabajador con ese correo", 400);
+        if (workerExists) throw new ValidationError("Ya existe un trabajador con ese correo", 400);
 
         const worker = await DbClient.worker.create({
             data: {
                 ...body,
                 user: {
                     connect: { id: session.user.id }
-                    // connect: { id: 'cluob8dmh0000yxwwpurbibhm' }
                 }
             }
         });
@@ -80,5 +79,39 @@ export const POST = async (req: Request) => {
         }, 201);
     } catch (error: unknown) {
         return EndpointErrorHandler({ error, defaultErrorMessage: 'Ocurrió un error creando el trabajador' });
+    };
+};
+
+
+export const PATCH = async (req: Request) => {
+    try {
+        const session = await getUserAuth();
+
+        if (!session) throw new AuthError("Debe iniciar sesión para crear un trabajador", 401);
+
+        const body = await req.json() as { email?: string; name?: string; ci?: string; direction?: string; };
+
+        if (!Object.keys(body)) throw new ValidationError("No se especificaron campos de búsqueda", 400);
+
+        const search: any = {};
+
+        if (body.email) search.email = { contains: body.email };
+        if (body.name) search.name = { contains: body.name };
+        if (body.ci) search.ci = { equals: body.ci };
+        if (body.direction) search.direction = { contains: body.direction };
+
+        const workers = await DbClient.worker.findMany({
+            where: search
+        });
+
+        return CustomResponse<ApiResponsePayload<{ workers: Omit<CompleteWorker, 'user' | 'userId'>[] }>>({
+            error: false,
+            message: [workers.length ? 'Información obtenida' : 'No se encontraron trabajadores'],
+            payload: {
+                workers,
+            }
+        }, 201);
+    } catch (error: unknown) {
+        return EndpointErrorHandler({ error, defaultErrorMessage: 'Ocurrió un error buscando la información' });
     };
 };

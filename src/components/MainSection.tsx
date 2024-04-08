@@ -10,7 +10,7 @@ export const MainSection = () => {
         <section className="w-full min-h-screen flex bg-green-200">
             <div className="container px-4 md:px-6 content-center">
                 <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-                    <div className="bg-neutral-100 dark:bg-neutral-800 mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square" />
+                    <div style={{ backgroundImage: "url(./haikei-bg.png)" }} className="bg-neutral-100 bg dark:bg-neutral-800 mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square" />
                     <div className="flex flex-col justify-center space-y-4">
                         <div className="space-y-2">
                             <h1 className="text-2xl font-bold tracking-tighter sm:text-4xl lg:text-5xl">
