@@ -18,6 +18,22 @@
   stroke-width: 1;
 }
 
+.svg-icon.confirm-icon {
+  width: 4rem;
+  height: 4rem;
+}
+
+.confirm-icon path,
+.confirm-icon polygon,
+.confirm-icon rect {
+  fill: white;
+}
+
+.confirm-icon circle {
+  stroke: white;
+  stroke-width: 1;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -51,16 +51,20 @@ export const POST = async (req: Request) => {
             }
         });
 
-        // const token = signToken<Pick<CompleteUser, 'id' | 'email' | 'name'>>({ id: user.id, email: user.email, name: user.name });
+        const token = signToken<Pick<CompleteUser, 'id' | 'email' | 'name'>>({ id: user.id, email: user.email, name: user.name });
 
-        // const data = await resend.emails.send({
-        //     from: "onboarding@resend.dev",
-        //     to: [body.email],
-        //     subject: "Confirmación de Correo Electrónico",
-        //     react: ConfirmationEmail({ userName: body.name, token }),
-        // });
+        if (process.env.NODE_ENV === "production") {
+            const data = await resend.emails.send({
+                from: "onboarding@resend.dev",
+                to: [body.email],
+                subject: "Confirmación de Correo Electrónico",
+                react: ConfirmationEmail({ userName: body.name, token }),
+            });
 
-        // if (data.error) throw new CustomError("No se pudo enviar el correo de confirmación", 400);
+            if (data.error) throw new CustomError("No se pudo enviar el correo de confirmación", 400);
+        } else {
+            console.log(token)
+        }
 
         return CustomResponse<ApiResponse>({ error: false, message: ['Enviamos un correo de confirmación', 'El usuario fue creado'] }, 201);
     } catch (error: unknown) {
