@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import AuthProvider from "@/lib/auth/Provider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({
         <AuthProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>{children}</ThemeProvider>
         </AuthProvider>
+        <Toaster />
       </body>
     </html>
   );

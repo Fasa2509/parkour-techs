@@ -2,6 +2,10 @@ import {z} from 'zod';
 
 const STATUS_ENUM = z.enum(["active", "vacations", "inactive"], { required_error: "El estado del trabajador es requerido", invalid_type_error: "El estado del trabajador no es válido" });
 
+export type WorkerStatus = z.infer<typeof STATUS_ENUM>;
+
+export const ValidStatus = STATUS_ENUM.options;
+
 // export const ZWorker = z.object({
 //     id       : z.number({ required_error: 'El id de usuario es requerido' }),
 //     email    : z.string({ required_error: 'El correo es requerido', invalid_type_error: 'El correo debe ser texto' }).trim().toLowerCase().email('El correo no es válido'),

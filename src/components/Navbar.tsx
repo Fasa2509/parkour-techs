@@ -27,12 +27,6 @@ export const Navbar = () => {
         >
           Cerrar sesión
         </Button>
-        {/* <Link
-          className="text-sm font-medium hover:underline underline-offset-4"
-          href="/sign-in"
-        >
-          Sign In
-        </Link> */}
         <Avatar>
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback>CN</AvatarFallback>

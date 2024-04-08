@@ -50,6 +50,17 @@ export const POST = async (req: Request) => {
 
         if (!ValidPhones[phoneInit as TValidPhones]) throw new ValidationError("El número de teléfono no parece ser válido", 400);
 
+        const workerExists = await DbClient.worker.findUnique({
+            where: {
+                email: body.email,
+            },
+            select: {
+                id: true,
+            }
+        });
+
+        if (!workerExists) throw new ValidationError("Ya existe un trabajador con ese correo", 400);
+
         const worker = await DbClient.worker.create({
             data: {
                 ...body,

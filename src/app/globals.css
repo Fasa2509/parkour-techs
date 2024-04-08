@@ -10,11 +10,11 @@
 .main-icon path,
 .main-icon polygon,
 .main-icon rect {
-  fill: #4691f6;
+  fill: #41d175;
 }
 
 .main-icon circle {
-  stroke: #4691f6;
+  stroke: #4ade80;
   stroke-width: 1;
 }
 
