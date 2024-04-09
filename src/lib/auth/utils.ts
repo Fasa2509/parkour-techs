@@ -2,14 +2,14 @@ import { getServerSession, NextAuthOptions, Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { Adapter } from "next-auth/adapters";
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import bcrypt from "bcrypt";
 import { z } from "zod";
+import bcrypt from "bcrypt";
 
+import { CompleteUser } from "prisma/zod/user";
+import { PrismaAdapter } from "@auth/prisma-adapter"
 import { DbClient } from "@/lib/db/index";
 import { redirect } from "next/navigation";
 import { isValidPassword } from "../validations";
-import { CompleteUser } from "prisma/zod/user";
 
 declare module "next-auth" {
   interface Session {
@@ -38,39 +38,39 @@ export const authOptions: NextAuthOptions = {
     },
   },
   providers: [
-    // CredentialsProvider({
-    //   name: 'Custom Login',
-    //   credentials: {
-    //     email: { label: 'Correo', type: 'email', placeholder: 'correo@google.com' },
-    //     password: { label: 'Contraseña', type: 'password', placeholder: 'Contraseña' },
-    //   },
-    //   async authorize(credentials) {
-    //     if (!z.string().email().safeParse(credentials?.email || '').success || !isValidPassword(credentials?.password || '')) return null;
+    CredentialsProvider({
+      name: 'Custom Login',
+      credentials: {
+        email: { label: 'Correo', type: 'email', placeholder: 'correo@google.com' },
+        password: { label: 'Contraseña', type: 'password', placeholder: 'Contraseña' },
+      },
+      async authorize(credentials) {
+        if (!z.string().email().safeParse(credentials?.email || '').success || !isValidPassword(credentials?.password || '')) return null;
 
-    //     const user = await DbClient.user.findUnique({
-    //       where: {
-    //         email: credentials?.email.toLocaleLowerCase(),
-    //       },
-    //       include: {
-    //         accounts: true,
-    //         sessions: true,
-    //         workers: true,
-    //       }
-    //     });
+        const user = await DbClient.user.findUnique({
+          where: {
+            email: credentials?.email.toLocaleLowerCase(),
+          },
+          include: {
+            accounts: true,
+            sessions: true,
+            workers: true,
+          }
+        });
 
-    //     if (!user || !user.emailVerified) return null;
+        if (!user || !user.emailVerified) return null;
 
-    //     const checkPassword = await bcrypt.compare(credentials!.password, user.password);
+        const checkPassword = await bcrypt.compare(credentials!.password, user.password);
 
-    //     if (!checkPassword) return null;
+        if (!checkPassword) return null;
 
-    //     const { password, ...userInfo } = user;
+        const { password, ...userInfo } = user;
 
-    //     console.log(userInfo)
+        console.log(userInfo)
 
-    //     return userInfo;
-    //   },
-    // }),
+        return userInfo;
+      },
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',

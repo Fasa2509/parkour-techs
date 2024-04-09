@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Parkour-Devs - Prueba Técnica
 
-## Getting Started
+## Set up project
 
-First, run the development server:
+Comandos básicos para inicializar el proyecto.
+
+Lo primero de todo es crear el archivo `.env` con la misma estructura que encontramos en el archivo `.env.template`, lo llenamos con la información requerida.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# JWT
+JWT_SEED=
+
+# DB config
+DB_PASSWORD=
+DATABASE_URL=postgresql://postgres:{DB_PASSWORD}@127.0.0.1:5432/{DB_NAME}
+
+# Resend config
+RESEND_API_KEY=
+
+# Auth.js config
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=
+
+# Google provider
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Para levantar la DB con Docker en caso de no tener Postgres instalado en nuestra máquina
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# windows
+docker compose up
+# linux/mac
+docker-compose up
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Luego, instalamos las dependencias necesarias
 
-## Learn More
+```bash
+# para instalar dependencias
+npm i
+# o también
+npm ci
 
-To learn more about Next.js, take a look at the following resources:
+# finalmente
+npm run db:generate
+npm run db:migrate
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+¡Y listo! Ya está corriendo nuestro sistema.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Abrimos [http://localhost:3000](http://localhost:3000) para visualizar el proyecto.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Características principales - Implementación
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
++ Sign in
+El inicio de sesión se lleva a cabo con el Google Provider para mayor simplicidad, por ello es importante configurar las keys en las variables de entorno
++ Usuarios y Trabajadores
+Se puede encontrar la estructura de los usuarios y trabajadores en `src/lib/types`
++ Búsqueda
+La búsqueda se implementó bajo una serie de criterios generales dados los trabajadores, el usuario podrá buscar en toda la DB bajo *email*, *nombre*, *cédula* y *dirección* enviando una petición **PATCH** a `/api/worker` con los datos de la búsqueda
++ JWT
+Los métodos del archivo `JWT.ts` reciben genéricos y tienen un propósito general, en esta ocasión se usan principalmente para la confirmación de correos electrónicos
++ Protección de rutas
+Esta se realiza mediante un middleware general ofrecido por `Auth.js` donde se exportan las rutas que se deseen proteger
++ Correos automáticos
+Se implementó *Resend* como plataforma para el envío de correos electrónicos y la confirmación de cuentas
++ Seed
+Al iniciar sesión, si realizamos una petición **GET** a la ruta `/api/seed` se cargará información de ejemplo sobre trabajadores para poder realizar pruebas generales

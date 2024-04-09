@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 
 import { AuthError, ParsingError } from '@/lib/errors';
-import { CompleteUser } from 'prisma/zod/user';
 
 export const signToken = <T>(payload: T): string => {
     if (!globalThis.process.env.JWT_SEED) throw new ParsingError('No hay seed de JWT', 400);

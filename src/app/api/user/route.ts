@@ -8,26 +8,10 @@ import { resend } from "@/lib/email";
 import { CustomError, EndpointErrorHandler, ValidationError } from "@/lib/errors";
 import { ZNewUser } from "@/lib/types/User";
 import { DbClient } from "@/lib/db";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth/utils";
-
-
-export const GET = async (req: Request) => {
-    try {
-        const session = await getServerSession(authOptions);
-
-        return CustomResponse<ApiResponse>({ error: false, message: ['Enviamos un correo de confirmación', 'El usuario fue creado'] }, 201);
-    } catch (error: unknown) {
-        return EndpointErrorHandler({ error, defaultErrorMessage: "Ocurrió un error creando el usuario" });
-    };
-};
 
 
 export const POST = async (req: Request) => {
     try {
-        const safeToken = signToken<Pick<CompleteUser, 'id' | 'email' | 'name'>>({ id: "cluob8dmh0000yxwwpurbibhm", email: "miguellfasanellap@gmail.com", name: "Miguel Company" });
-        console.log({ safeToken })
-
         const body = ZNewUser.parse(await req.json());
 
         const userExists = await DbClient.user.findUnique({
@@ -63,7 +47,7 @@ export const POST = async (req: Request) => {
 
             if (data.error) throw new CustomError("No se pudo enviar el correo de confirmación", 400);
         } else {
-            console.log(token)
+            console.log({ token });
         }
 
         return CustomResponse<ApiResponse>({ error: false, message: ['Enviamos un correo de confirmación', 'El usuario fue creado'] }, 201);
