@@ -1,16 +1,13 @@
 import { NextRequest } from "next/server";
 import { cookies } from "next/headers";
-import cookie from "cookie";
 import bcrypt from "bcrypt";
 import { z } from "zod";
 
-import { ApiResponse, CustomResponse } from "@/lib/api/Api";
 import { AuthError, EndpointErrorHandler, ValidationError } from "@/lib/errors";
 import { DbClient } from "@/lib/db/index";
 import { isValidPassword } from "@/lib/validations";
 import { decodeToken, signToken } from "@/lib/JWT";
 import { CompleteUser } from "prisma/zod/user";
-
 
 export const POST = async (req: NextRequest) => {
     try {
@@ -66,33 +63,5 @@ export const DELETE = async (req: NextRequest) => {
         });
     } catch (error: unknown) {
         return EndpointErrorHandler({ error, defaultErrorMessage: "Ocurrió un error cerrando sesión" });
-    };
-};
-
-
-export const PATCH = async (req: NextRequest) => {
-    try {
-        let cookieStore = cookies();
-
-        const tokenInfo = cookieStore.get("auth-token")?.value;
-
-        if (!tokenInfo) throw new AuthError("No hay token de sesión", 401);
-
-        const userInfo = await decodeToken<Pick<CompleteUser, 'id' | 'email' | 'name' | 'direction' | 'createdAt' | 'emailVerified' | 'image'>>(tokenInfo);
-
-        const token = signToken<Pick<CompleteUser, 'id' | 'email' | 'name' | 'direction' | 'createdAt' | 'emailVerified' | 'image'>>(userInfo);
-
-        const res = new Response(JSON.stringify({ error: false, message: ['Inicio de sesión exitoso'] }), {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            status: 200,
-        });
-
-        cookieStore.set("auth-token", token, { path: "/", httpOnly: true, maxAge: 24 * 3600 * 7 });
-
-        return res;
-    } catch (error: unknown) {
-        return EndpointErrorHandler({ error, defaultErrorMessage: "Ocurrió un error iniciando sesión" });
     };
 };

@@ -8,11 +8,12 @@ Lo primero de todo es crear el archivo `.env` con la misma estructura que encont
 
 ```bash
 # JWT
+# Aquí puede ir cualquier cosa, pero preferiblemente utilizar un hash en base64
 JWT_SEED=
 
 # DB config
-DB_PASSWORD=
-DATABASE_URL=postgresql://postgres:{DB_PASSWORD}@127.0.0.1:5432/{DB_NAME}
+DB_PASSWORD=12345678
+DATABASE_URL=postgresql://postgres:12345678@127.0.0.1:5432/{DB_NAME}
 
 # Resend config
 RESEND_API_KEY=
@@ -84,3 +85,82 @@ Esta se realiza mediante un middleware general ofrecido por `Auth.js` donde se e
 Se implementó *Resend* como plataforma para el envío de correos electrónicos y la confirmación de cuentas
 + Seed
 Al iniciar sesión, si realizamos una petición **GET** a la ruta `/api/seed` se cargará información de ejemplo sobre trabajadores para poder realizar pruebas generales
+
+### Documentación
++ ```/api/login```
+Operaciones generales de login
+    - POST
+    Para realizar el login de usuario con correo y contraseña
+    Recibe en el body
+    ```
+    {
+        email   : string;
+        password: string;
+    }
+    ```
+    - DELETE
+    Para cerrar la sesión de usuario inicializada con correo y contraseña
+    Rebice en el body: ---
++ ```/api/user```
+Operaciones acerca de los usuarios
+    - POST
+    Para crear un nuevo usuario. Se aplica únicamente cuando se crea un usuario con correo y contraseña, de resto cuando el login es con **OAuth** la gestión de la creación la lleva a cabo el adaptador de Prisma
+    Recibe en el body:
+    ```
+    {
+        email          : string;
+        name           : string;
+        direction      : string;
+        password       : string;
+        confirmPassword: string;
+    }
+    ```
++ ```/api/worker```
+Operaciones acerca de los trabajadores asociados a cada usuario
+    - GET
+    Devuelve la información **paginada** de los trabajadores asociados al usuario solicitante. Si no hay sesión retorna un error.
+    Requiere de: sesión activa
+    - POST
+    Crea un nuevo trabajador asociado al usuario solicitante.
+    Requiere de: sesión activa
+    Recibe en el body:
+    ```
+    {
+        email    : string;
+        name     : string;
+        ci       : number;
+        phone    : string;  # debe iniciar con 0412, 0414, 0416, 0424, 0426
+        direction: string;
+        salary   : number;   # mayor a 0
+        hours    : number;   # mayor a 0
+        status   : active | inactive | vacations
+    }
+    ```
+    - PATCH
+    A partir de unos parámetros de búsqueda, devuelve la información filtrada según dichos parámetros
+    Requiere de: sesión activa
+    ```
+    {
+        email?    : string;
+        name?     : string;
+        ci?       : number;  # si viene, debe coincidir exactamente con la ci del trabajador buscado
+        direction?: string;
+    }
+    ```
++ ```/api/worker/[workerId]```
+Operaciones específicas sobre un trabajador en particular
+    - PUT
+    Actualiza la información del trabajador.
+    Requiere de: sesión activa
+    Recibe en el body: *Uno más parámetros del trabajador a actualizar. Altera únicamente los parámetros enviados, el resto se mantiene intacto*
+    - DELETE
+    Elimina un trabajador
+    Requiere de: sesión activa
+    Recibe en el body: ---
++ ```/api/seed```
+Endpoint general para cargar información de ejemplo (*seed*)
+    - GET
+    Carga información de ejemplo asociada al usuario cuya sesión **debe estar activa** a la hora de llamar este endpoint.
+    Requiere de: sesión activa
+
+Fueron implementados múltiples componentes de ***Shadcn*** en conjunto con ***Tailwind*** para la agilización del desarrollo.
