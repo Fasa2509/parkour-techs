@@ -1,7 +1,7 @@
+import { CompleteWorker } from "prisma/zod/worker";
 import { ApiPagination, ApiResponse, ApiResponsePayload, ZApiPagination, baseApi } from "@/lib/api/Api";
 import { ApiErrorHandler, ValidationError } from "@/lib/errors";
 import { TNewWorker, TUpdateWorker, ZNewWorker, ZUpdateWorker } from "@/lib/types/Worker";
-import { CompleteWorker } from "prisma/zod/worker";
 
 
 export const getPaginatedWorkers = async (paginationInfo: ApiPagination): Promise<ApiResponsePayload<Omit<CompleteWorker, 'user' | 'userId'>[]>> => {
@@ -17,11 +17,11 @@ export const getPaginatedWorkers = async (paginationInfo: ApiPagination): Promis
 };
 
 
-export const createWorker = async (workerInfo: TNewWorker): Promise<ApiResponsePayload<Omit<CompleteWorker, 'user' | 'userId'>>> => {
+export const createWorker = async (workerInfo: TNewWorker): Promise<ApiResponsePayload<{ worker: Omit<CompleteWorker, 'user' | 'userId'> }>> => {
     try {
         const body = ZNewWorker.parse(workerInfo);
 
-        const { data } = await baseApi.post<ApiResponsePayload<Omit<CompleteWorker, 'user' | 'userId'>>>("/worker", body);
+        const { data } = await baseApi.post<ApiResponsePayload<{ worker: Omit<CompleteWorker, 'user' | 'userId'> }>>("/worker", body);
 
         return data;
     } catch (error: unknown) {
@@ -30,13 +30,13 @@ export const createWorker = async (workerInfo: TNewWorker): Promise<ApiResponseP
 };
 
 
-export const updateWorker = async (workerId: string, workerInfo: TUpdateWorker): Promise<ApiResponsePayload<Omit<CompleteWorker, 'user' | 'userId'>>> => {
+export const updateWorker = async (workerId: string, workerInfo: TUpdateWorker): Promise<ApiResponsePayload<{ worker: Omit<CompleteWorker, 'user' | 'userId'> }>> => {
     try {
         const body = ZUpdateWorker.parse(workerInfo);
 
         if (!Object.keys(body).length) throw new ValidationError("No se especificó campo a actualizar", 400);
 
-        const { data } = await baseApi.put<ApiResponsePayload<Omit<CompleteWorker, 'user' | 'userId'>>>("/worker/" + workerId, body);
+        const { data } = await baseApi.put<ApiResponsePayload<{ worker: Omit<CompleteWorker, 'user' | 'userId'> }>>("/worker/" + workerId, body);
 
         return data;
     } catch (error: unknown) {

@@ -1,11 +1,11 @@
 "use client"
 import { ChangeEvent, FC, FormEvent, useContext, useState } from "react";
 
-import { TNewWorker, TUpdateWorker, ValidStatus } from "@/lib/types/Worker";
+import { toast } from "sonner";
+import { TNewWorker, ValidStatus } from "@/lib/types/Worker";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Button } from "../ui/button";
 import { createWorker } from "@/lib/db/methods/dbWorker";
-import { toast } from "sonner";
 import { WorkerContext } from "@/lib/context/WorkerContext";
 
 const formInitialState: TNewWorker & { lastname: string } = {
@@ -37,10 +37,10 @@ export const CreateWorkerForm: FC = () => {
             ...body,
             name: body.name.trim() + " " + lastname.trim()
         });
-        setIsLoading(true);
+        setIsLoading(false);
 
         toast(res.message[0]);
-        !res.error && setWorkers((prevState) => [res.payload, ...prevState]);
+        !res.error && setWorkers((prevState) => [res.payload.worker, ...prevState]);
     };
 
     return (

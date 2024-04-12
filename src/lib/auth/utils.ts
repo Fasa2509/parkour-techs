@@ -27,9 +27,6 @@ export type AuthSession = {
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(DbClient) as Adapter,
-  // session: {
-  //   strategy: 'jwt',
-  // },
   pages: {
     signIn: "/sign-in"
   },
@@ -41,8 +38,6 @@ export const authOptions: NextAuthOptions = {
       // @ts-ignore
       session.user.createdAt = user.createdAt
       session.user.emailVerified = user.emailVerified
-
-      console.log(session)
 
       return session;
     },
@@ -57,7 +52,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Contraseña', type: 'password', placeholder: 'Contraseña' },
       },
       async authorize(credentials, req) {
-        console.log(req)
         if (!z.string().email().safeParse(credentials?.email || '').success || !isValidPassword(credentials?.password || '')) return null;
 
         const user = await DbClient.user.findUnique({
@@ -78,10 +72,6 @@ export const authOptions: NextAuthOptions = {
         if (!checkPassword) return null;
 
         const { password, ...userInfo } = user;
-
-        console.log({ userInfo })
-
-        // if (req.headers) 
 
         return userInfo;
       },

@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { CompleteWorker } from "prisma/zod/worker"
 import { DataTable } from "./data-table"
 import { CreateWorkerForm } from "./forms/CreateWorkerForm"
-import { columns } from "./column";
+import { columns, getColumns } from "./column";
 import { WorkerContext } from "@/lib/context/WorkerContext";
 import { SearchWorkerForm } from "./forms/SearchWorkerForm";
 import Link from "next/link";
@@ -36,7 +36,7 @@ export const WorkersInfo: FC<Props> = ({ session, workers: workersInfo }) => {
                 <div className="p-4">
                     <p className="text-2xl font-bold">Trabajadores de {session?.user.name}</p>
                 </div>
-                {workers && <DataTable columns={columns} data={workers} />}
+                {workers && <DataTable columns={getColumns(setWorkers)} data={workers} />}
             </div>
         </div>
     )

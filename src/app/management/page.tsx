@@ -12,7 +12,7 @@ export default async function ManagementPage() {
     const workers = await backGetWorkers();
 
     const session = await getUserAuth();
-    console.log({ session })
+
     if (!session) return redirect("/sign-in");
 
     return (

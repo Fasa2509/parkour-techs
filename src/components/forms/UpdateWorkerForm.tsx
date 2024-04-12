@@ -1,10 +1,10 @@
 "use client"
 import { ChangeEvent, FC, FormEvent, useContext, useState } from "react";
 
+import { toast } from "sonner";
 import { TUpdateWorker, ValidStatus } from "@/lib/types/Worker";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Button } from "../ui/button";
-import { toast } from "sonner";
 import { CompleteWorker } from "prisma/zod/worker";
 import { updateWorker } from "@/lib/db/methods/dbWorker";
 import { WorkerContext } from "@/lib/context/WorkerContext";
@@ -18,7 +18,7 @@ export const UpdateWorkerForm: FC<Props> = ({ workerInfo }) => {
     const [formState, setFormState] = useState<TUpdateWorker>(workerInfo);
     const [isLoading, setIsLoading] = useState(false);
 
-    const { workers, setWorkers } = useContext(WorkerContext);
+    const { setWorkers } = useContext(WorkerContext);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -37,7 +37,7 @@ export const UpdateWorkerForm: FC<Props> = ({ workerInfo }) => {
         setIsLoading(false);
 
         toast(res.message[0]);
-        !res.error && setWorkers((prevState) => prevState.map((worker) => (worker.id !== workerInfo.id) ? worker : res.payload));
+        !res.error && setWorkers((prevState) => prevState.map((worker) => (worker.id !== workerInfo.id) ? worker : res.payload.worker));
     };
 
     return (

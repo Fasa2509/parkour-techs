@@ -1,6 +1,7 @@
 "use client";
+import { FC, useState } from "react";
 import Link from "next/link";
-import { FC } from "react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { signOut } from "next-auth/react";
@@ -8,6 +9,7 @@ import { closeSession } from "@/lib/db/methods/dbUser";
 
 
 export const Navbar = () => {
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <header className="px-4 lg:px-6 h-14 flex items-center">
@@ -25,7 +27,9 @@ export const Navbar = () => {
         <Button
           className="text-sm font-medium content-center"
           onClick={async () => {
+            setIsLoading(true);
             const res = await closeSession();
+            res.error && setIsLoading(false);
             !res.error && signOut({ callbackUrl: "/" });
           }}
         >

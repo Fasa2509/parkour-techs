@@ -28,7 +28,7 @@ export const SignInForm = () => {
 
     setIsLoading(true);
     const checked = await checkSignIn({ email, password });
-    setIsLoading(false);
+    checked.error && setIsLoading(false);
 
     const page = searchParams.get("p");
     const callbackUrl = (page && page.startsWith('/')) ? page : '/management';
