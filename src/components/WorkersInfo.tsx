@@ -9,14 +9,14 @@ import { columns } from "./column";
 import { WorkerContext } from "@/lib/context/WorkerContext";
 import { SearchWorkerForm } from "./forms/SearchWorkerForm";
 import Link from "next/link";
+import { Session } from "next-auth";
 
 interface Props {
+    session: Session;
     workers: Omit<CompleteWorker, 'user' | 'userId'>[];
 }
 
-export const WorkersInfo: FC<Props> = ({ workers: workersInfo }) => {
-
-    const { data: session } = useSession();
+export const WorkersInfo: FC<Props> = ({ session, workers: workersInfo }) => {
 
     const { workers, setWorkers } = useContext(WorkerContext);
 

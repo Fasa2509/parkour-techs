@@ -1,33 +1,27 @@
-import { NextPage } from "next";
+import Link from "next/link";
 
-import RootLayout from "../layout";
 import { CompleteUser } from "prisma/zod/user";
 import { redirect } from "next/navigation";
 import { decodeToken } from "@/lib/JWT";
 import { DbClient } from "@/lib/db";
 
 export default async function ConfirmPage({ searchParams }: any) {
-    // const { token } = searchParams;
+    const { token } = searchParams;
 
-    // if (!token) return redirect("/");
+    if (!token) return redirect("/");
 
-    // const decodedInfo = await decodeToken<Pick<CompleteUser, 'id' | 'email' | 'name'>>(token);
+    const decodedInfo = await decodeToken<Pick<CompleteUser, 'id' | 'email' | 'name'>>(token);
 
-    // if (!decodedInfo || !decodedInfo.id) return redirect("/");
+    if (!decodedInfo || !decodedInfo.id) return redirect("/");
 
-    // const res = await DbClient.user.update({
-    //     where: {
-    //         email: decodedInfo.email,
-    //     },
-    //     data: {
-    //         emailVerified: new Date()
-    //     }
-    // });
-
-    const decodedInfo = {
-        name: "Ejemplo",
-        email: "miguellfasanellap@gmail.com"
-    }
+    const res = await DbClient.user.update({
+        where: {
+            email: decodedInfo.email,
+        },
+        data: {
+            emailVerified: new Date()
+        }
+    });
 
     return (
         <section className="min-h-screen flex justify-center content-center bg-gradient-to-b from-green-200 to-green-400 pb-8">
@@ -44,6 +38,10 @@ export default async function ConfirmPage({ searchParams }: any) {
                     className="text-center text-neutral-500 md:text-xl lg:text-base">
                     Has confirmado de manera exitosa tu correo electrónico. Ahora podrás gestionar tu equipo desde cualquier parte. ¡A trabajar!
                 </p>
+                <div>
+                    <Link href="/sign-in" className="w-full flex text-center content-center bg-black h-10 items-center justify-center rounded-md text-neutral-50 shadow transition-colors"
+                    >Iniciar sesión</Link>
+                </div>
             </article>
         </section>
     );

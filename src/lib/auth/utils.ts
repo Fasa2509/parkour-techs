@@ -1,5 +1,6 @@
 import { getServerSession, NextAuthOptions, Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { cookies } from "next/headers";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { Adapter } from "next-auth/adapters";
 import { z } from "zod";
@@ -10,6 +11,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import { DbClient } from "@/lib/db/index";
 import { redirect } from "next/navigation";
 import { isValidPassword } from "../validations";
+import { decodeToken, signToken } from "../JWT";
 
 declare module "next-auth" {
   interface Session {
@@ -25,6 +27,12 @@ export type AuthSession = {
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(DbClient) as Adapter,
+  // session: {
+  //   strategy: 'jwt',
+  // },
+  pages: {
+    signIn: "/sign-in"
+  },
   callbacks: {
     session: ({ session, user }) => {
       session.user.id = user.id
@@ -34,17 +42,22 @@ export const authOptions: NextAuthOptions = {
       session.user.createdAt = user.createdAt
       session.user.emailVerified = user.emailVerified
 
+      console.log(session)
+
       return session;
     },
   },
   providers: [
     CredentialsProvider({
       name: 'Custom Login',
+      type: "credentials",
+      id: "credentials",
       credentials: {
         email: { label: 'Correo', type: 'email', placeholder: 'correo@google.com' },
         password: { label: 'Contraseña', type: 'password', placeholder: 'Contraseña' },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
+        console.log(req)
         if (!z.string().email().safeParse(credentials?.email || '').success || !isValidPassword(credentials?.password || '')) return null;
 
         const user = await DbClient.user.findUnique({
@@ -66,7 +79,9 @@ export const authOptions: NextAuthOptions = {
 
         const { password, ...userInfo } = user;
 
-        console.log(userInfo)
+        console.log({ userInfo })
+
+        // if (req.headers) 
 
         return userInfo;
       },
@@ -83,7 +98,17 @@ export const authOptions: NextAuthOptions = {
 
 export const getUserAuth = async (): Promise<Session | null> => {
   const session = await getServerSession(authOptions);
-  return session;
+
+  if (session) return session;
+
+  const token = cookies().get("auth-token")?.value;
+
+  if (token) {
+    const user = await decodeToken<CompleteUser>(token);
+    if (user) return { user, expires: "" }
+  }
+
+  return null;
 };
 
 export const checkAuth = async (): Promise<Session | null> => {

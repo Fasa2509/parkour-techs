@@ -23,6 +23,7 @@ const formInitialState: TNewWorker & { lastname: string } = {
 export const CreateWorkerForm: FC = () => {
 
     const [formState, setFormState] = useState<TNewWorker & { lastname: string }>(formInitialState);
+    const [isLoading, setIsLoading] = useState(false);
 
     const { setWorkers } = useContext(WorkerContext);
 
@@ -31,10 +32,12 @@ export const CreateWorkerForm: FC = () => {
 
         const { lastname, ...body } = formState;
 
+        setIsLoading(true);
         const res = await createWorker({
             ...body,
             name: body.name.trim() + " " + lastname.trim()
         });
+        setIsLoading(true);
 
         toast(res.message[0]);
         !res.error && setWorkers((prevState) => [res.payload, ...prevState]);
@@ -130,7 +133,7 @@ export const CreateWorkerForm: FC = () => {
                         <DropdownMenuTrigger className="border-green-500 border-2 bg-white px-2 py-1 rounded-sm">{formState.status}</DropdownMenuTrigger>
                         <DropdownMenuContent>
                             {
-                                ValidStatus.map((status) => <DropdownMenuItem className={`px-2 py-1 bg-white outline-green-300 hover:bg-gray-200/80 ${formState.status === status ? "bg-green-400" : ""}`} onClick={() => setFormState((prevState) => ({ ...prevState, status }))}>{status}</DropdownMenuItem>)
+                                ValidStatus.map((status) => <DropdownMenuItem key={status} className={`px-2 py-1 bg-white outline-green-300 hover:bg-gray-200/80 ${formState.status === status ? "bg-green-400" : ""}`} onClick={() => setFormState((prevState) => ({ ...prevState, status }))}>{status}</DropdownMenuItem>)
                             }
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -177,7 +180,8 @@ export const CreateWorkerForm: FC = () => {
                     className="resize-none w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                     required
                     onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setFormState((prevState) => ({ ...prevState, direction: e.target.value }))}
-                >{formState.direction}</textarea>
+                    value={formState.direction}
+                ></textarea>
                 <label className="after:content[' '] pointer-events-none absolute left-0  -top-2.5 flex h-full w-full select-none !overflow-visible truncate text-sm font-normal leading-tight text-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-gray-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-sm peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:after:scale-x-100 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                     Dirección
                 </label>
@@ -185,6 +189,7 @@ export const CreateWorkerForm: FC = () => {
 
             <div className="relative h-11 w-full min-w-[200px] mt-4">
                 <Button type="submit"
+                    disabled={isLoading}
                     className="w-full border-2 border-transparent hover:border-green-300 text-lg hover:bg-white hover:text-green-300 bg-green-300 text-white"
                 >
                     Crear trabajador

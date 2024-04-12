@@ -7,7 +7,7 @@ import { AuthSession, getUserAuth } from "@/lib/auth/utils";
 
 const Sidebar = async () => {
   const session = await getUserAuth();
-  if (session.session === null) return null;
+  if (session?.user === null) return null;
 
   return (
     <aside className="h-screen min-w-52 bg-muted hidden md:block p-4 pt-8 border-r border-border shadow-inner">
@@ -16,7 +16,7 @@ const Sidebar = async () => {
           <h3 className="text-lg font-semibold ml-4">Logo</h3>
           <SidebarItems />
         </div>
-        <UserDetails session={session} />
+        <UserDetails session={{ session }} />
       </div>
     </aside>
   );
@@ -43,9 +43,9 @@ const UserDetails = ({ session }: { session: AuthSession }) => {
           <AvatarFallback className="border-border border-2 text-muted-foreground">
             {user.name
               ? user.name
-                  ?.split(" ")
-                  .map((word) => word[0].toUpperCase())
-                  .join("")
+                ?.split(" ")
+                .map((word) => word[0].toUpperCase())
+                .join("")
               : "~"}
           </AvatarFallback>
         </Avatar>

@@ -1,5 +1,6 @@
+import { Session } from "next-auth";
+
 import { CompleteWorker } from "prisma/zod/worker";
-import { PAGINATION_LIMIT } from "@/lib/api/Api";
 import { DbClient } from "..";
 import { getUserAuth } from "@/lib/auth/utils";
 import { AuthError } from "@/lib/errors";

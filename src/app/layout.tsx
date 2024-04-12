@@ -5,7 +5,7 @@ import AuthProvider from "@/lib/auth/Provider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 import { Toaster } from "sonner";
-import { WorkerProvider } from "@/lib/context/WorkerProvider";
+// import { WorkerProvider } from "@/lib/context/WorkerProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -25,12 +25,16 @@ export const POST = async (req: Request) => {
 
         if (userExists) throw new ValidationError("Ya existe un usuario con ese correo", 400);
 
+        if (body.password !== body.confirmPassword) throw new ValidationError("Las claves deben ser iguales entre sí", 400);
+
         const salt = await bcrypt.genSalt(10);
         const userPassword = await bcrypt.hash(body.password, salt);
 
+        const { confirmPassword, password, ...info } = body;
+
         const user = await DbClient.user.create({
             data: {
-                ...body,
+                ...info,
                 password: userPassword
             }
         });

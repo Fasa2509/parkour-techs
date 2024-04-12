@@ -4,6 +4,7 @@ import { FC } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { signOut } from "next-auth/react";
+import { closeSession } from "@/lib/db/methods/dbUser";
 
 
 export const Navbar = () => {
@@ -23,7 +24,10 @@ export const Navbar = () => {
         </Link>
         <Button
           className="text-sm font-medium content-center"
-          onClick={() => signOut({ callbackUrl: "/" })}
+          onClick={async () => {
+            const res = await closeSession();
+            !res.error && signOut({ callbackUrl: "/" });
+          }}
         >
           Cerrar sesión
         </Button>

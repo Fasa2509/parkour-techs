@@ -136,7 +136,7 @@ export const columns: ColumnDef<Omit<CompleteWorker, 'user' | 'userId'>>[] = [
                     <DropdownMenuTrigger>{status}</DropdownMenuTrigger>
                     <DropdownMenuContent>
                         {
-                            ValidStatus.map((status) => <DropdownMenuItem onClick={async () => {
+                            ValidStatus.map((status) => <DropdownMenuItem key={id} onClick={async () => {
                                 const accepted = window.confirm(`¿Cambiar a ${status} el estado de ${name}?`);
 
                                 if (!accepted) return;

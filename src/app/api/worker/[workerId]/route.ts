@@ -16,7 +16,6 @@ export const PUT = async (req: Request) => {
         if (!session) throw new AuthError("Debe iniciar sesión para actualizar un trabajador", 401);
 
         const body = ZUpdateWorker.parse(await req.json());
-        console.log({ body })
 
         let workerExists = await DbClient.worker.findUnique({
             where: {
