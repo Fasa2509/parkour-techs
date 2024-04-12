@@ -1,4 +1,4 @@
-# Parkour-Devs - Prueba Técnica
+# Parkour Devs - Prueba Técnica
 
 ## Set up project
 
@@ -54,6 +54,19 @@ npm run dev
 Abrimos [http://localhost:3000](http://localhost:3000) para visualizar el proyecto.
 
 ---
+
+### Mejoras de actualización
+
++ Inicio de sesión
+Ahora podemos crear una cuenta e iniciar sesión con correo y contraseña, esto implica que se envía un correo electrónico de confirmación y se debe activar la cuenta
++ Sidebar
+Agregar Sidebar Menu de Kirimase
++ UX en formularios
+Los botones de enviar formulario se desactivan al momento de darles click indicando al usuario que su solicitud se está ejecutando y reciben un mensaje de respuesta al completarse la acción
++ Dark Mode
+Fue implementado un dark-mode funcional que se puede activar desde el Sidebar Menu - Settings
++ SSR
+Todas las vistas fueron cambiadas a renderizado del lado del servidor (Server Side Rendering)
 
 ### Características principales - Implementación
 

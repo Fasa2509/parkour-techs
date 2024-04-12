@@ -7,6 +7,8 @@ import { LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { defaultLinks, additionalLinks } from "@/config/nav";
+import { closeSession } from "@/lib/db/methods/dbUser";
+import { signOut } from "next-auth/react";
 
 export interface SidebarLink {
   title: string;
@@ -20,13 +22,13 @@ const SidebarItems = () => {
       <SidebarLinkGroup links={defaultLinks} />
       {additionalLinks.length > 0
         ? additionalLinks.map((l) => (
-            <SidebarLinkGroup
-              links={l.links}
-              title={l.title}
-              border
-              key={l.title}
-            />
-          ))
+          <SidebarLinkGroup
+            links={l.links}
+            title={l.title}
+            border
+            key={l.title}
+          />
+        ))
         : null}
     </>
   );
@@ -69,12 +71,34 @@ const SidebarLink = ({
   link: SidebarLink;
   active: boolean;
 }) => {
+  if (link.href === "#") return (
+    <Link
+      href={link.href}
+      className={`group transition-colors p-2 inline-block hover:bg-popover hover:text-primary text-muted-foreground text-xs hover:shadow rounded-md w-full${active ? " text-primary font-semibold" : ""
+        }`}
+      onClick={async () => {
+        const res = await closeSession();
+        !res.error && signOut({ callbackUrl: "/" });
+      }}
+    >
+      <div className="flex items-center">
+        <div
+          className={cn(
+            "opacity-0 left-0 h-6 w-[4px] absolute rounded-r-lg bg-primary",
+            active ? "opacity-100" : "",
+          )}
+        />
+        <link.icon className="h-3.5 mr-1" />
+        <span>{link.title}</span>
+      </div>
+    </Link>
+  )
+
   return (
     <Link
       href={link.href}
-      className={`group transition-colors p-2 inline-block hover:bg-popover hover:text-primary text-muted-foreground text-xs hover:shadow rounded-md w-full${
-        active ? " text-primary font-semibold" : ""
-      }`}
+      className={`group transition-colors p-2 inline-block hover:bg-popover hover:text-primary text-muted-foreground text-xs hover:shadow rounded-md w-full${active ? " text-primary font-semibold" : ""
+        }`}
     >
       <div className="flex items-center">
         <div

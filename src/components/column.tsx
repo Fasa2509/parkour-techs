@@ -59,8 +59,8 @@ export const columns: ColumnDef<Omit<CompleteWorker, 'user' | 'userId'>>[] = [
 
             return (
                 <Popover>
-                    <PopoverTrigger className="p-4 bg-sky-400 hover:bg-sky-500 text-white px-4 py-2 rounded-md">Actualizar</PopoverTrigger>
-                    <PopoverContent>
+                    <PopoverTrigger className="bg-sky-400 hover:bg-sky-500 text-white px-4 py-2 rounded-md">Actualizar</PopoverTrigger>
+                    <PopoverContent className="p-0">
                         <UpdateWorkerForm workerInfo={workerInfo} />
                     </PopoverContent>
                 </Popover>
@@ -186,7 +186,7 @@ export const columns: ColumnDef<Omit<CompleteWorker, 'user' | 'userId'>>[] = [
             const id = row.getValue("id") as string;
             const name = row.getValue("name");
 
-            return <Button className="bg-red-500 hover:bg-red-700" onClick={async () => {
+            return <Button className="bg-red-500 hover:bg-red-700 dark:text-white" onClick={async () => {
                 const accepted = window.confirm(`¿Eliminar a ${name}?`);
 
                 if (!accepted) return;

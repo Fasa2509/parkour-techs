@@ -26,13 +26,13 @@ export const WorkersInfo: FC<Props> = ({ session, workers: workersInfo }) => {
         <div className="mx-2 md:mx-8 lg:mx-10 flex flex-col gap-8">
             <div className="flex-1 flex flex-col md:flex-row gap-6 justify-evenly">
                 <CreateWorkerForm />
-                <div className="bg-white p-4 mx-auto md:py-6 md:px-8 flex-1 rounded-md max-w-[600px] flex flex-col gap-6 justify-center">
+                <div className="bg-white dark:bg-zinc-800 p-4 mx-auto md:py-6 md:px-8 flex-1 rounded-md max-w-[600px] flex flex-col gap-6 justify-center">
                     <h2 className="text-4xl md:text-5xl font-bold text-center text-sky-500">Buscar trabajador</h2>
-                    <p className="text-neutral-700 md:text-xl lg:text-base xl:text-xl md:text-justify">Busca en nuestra DB y filtra la información de los trabajadores por los campos que gustes. Podrás ver los resultados de tu búsqueda en tiempo real y sobre todas las entradas.</p>
+                    <p className="text-neutral-700 dark:text-neutral-300 md:text-xl lg:text-base xl:text-xl md:text-justify">Busca en nuestra DB y filtra la información de los trabajadores por los campos que gustes. Podrás ver los resultados de tu búsqueda en tiempo real y sobre todas las entradas.</p>
                     <Link className="bg-sky-500 text-white text-base text-center rounded-sm py-2" href="/search">Buscar trabajador</Link>
                 </div>
             </div>
-            <div className="bg-white rounded-md">
+            <div className="bg-white dark:bg-zinc-800 rounded-md">
                 <div className="p-4">
                     <p className="text-2xl font-bold">Trabajadores de {session?.user.name}</p>
                 </div>

@@ -105,7 +105,7 @@ export const getUserAuth = async (): Promise<Session | null> => {
 
   if (token) {
     const user = await decodeToken<CompleteUser>(token);
-    if (user) return { user, expires: "" }
+    if (user) return { user, expires: new Date(new Date().getTime() + 24 * 3600 * 7 * 1000).toLocaleString() }
   }
 
   return null;

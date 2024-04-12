@@ -24,7 +24,7 @@ export default async function ConfirmPage({ searchParams }: any) {
     });
 
     return (
-        <section className="min-h-screen flex justify-center content-center bg-gradient-to-b from-green-200 to-green-400 pb-8">
+        <section className="min-h-screen flex justify-center content-center bg-gradient-to-b from-green-200 to-green-400 pb-8 dark:from-green-500 dark:to-green-700">
             <article
                 className="rounded-md p-4 min-h-[520px] mt-6 bg-white max-w-[350px] flex flex-col gap-4 content-center">
                 <div className="bg-green-500 mx-auto rounded-[10rem] w-24 h-24 grid place-items-center">

@@ -34,6 +34,17 @@
   stroke-width: 1;
 }
 
+.open-icon path,
+.open-icon polygon,
+.open-icon rect {
+  fill: #4ade80;
+}
+
+.open-icon circle {
+  stroke: #4ade80;
+  stroke-width: 1;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

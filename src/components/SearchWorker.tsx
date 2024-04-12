@@ -18,10 +18,10 @@ export const SearchWorker = () => {
 
     return (
         <>
-            <div className="bg-white rounded-md mx-2 md:mx-8 lg:mx-10">
+            <div className="bg-white dark:bg-zinc-800 rounded-md mx-2 md:mx-8 lg:mx-10">
                 <SearchWorkerForm setWorkers={setWorkers} />
             </div>
-            <div className="bg-white rounded-md mx-2 my-8 md:mx-8 lg:mx-10">
+            <div className="bg-white dark:bg-zinc-800 rounded-md mx-2 my-8 md:mx-8 lg:mx-10">
                 <Table>
                     <TableHeader>
                         <TableRow>

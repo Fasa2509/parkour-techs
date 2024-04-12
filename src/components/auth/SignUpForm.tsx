@@ -50,7 +50,7 @@ export const SignUpForm = () => {
   };
 
   return (
-    <div className="flex-1 bg-white rounded-sm max-w-[550px]">
+    <div className="flex-1 bg-white dark:bg-zinc-800 rounded-sm max-w-[550px]">
       <form className="flex flex-col gap-6 p-4 md:p-8" onSubmit={handleSubmit}>
         <h1 className="text-2xl font-bold text-center">
           Crear cuenta
@@ -59,7 +59,7 @@ export const SignUpForm = () => {
           <input
             type="text"
             placeholder="John Doe"
-            className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+            className="w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
             ref={nameRef}
             required
           />
@@ -71,7 +71,7 @@ export const SignUpForm = () => {
           <input
             type="email"
             placeholder="correo@gmail.com"
-            className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+            className="w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
             ref={emailRef}
             required
           />
@@ -85,13 +85,13 @@ export const SignUpForm = () => {
               type="password"
               minLength={8}
               placeholder="Clave"
-              className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+              className="w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
               ref={passwordRef}
               required
             />
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger className="absolute left-12 -top-2.5 rounded-full bg-black text-white w-4 h-4">i</TooltipTrigger>
+                <TooltipTrigger type="button" className="absolute left-12 -top-2.5 rounded-full font-bold bg-black text-white dark:bg-white dark:text-black w-4 h-4">i</TooltipTrigger>
                 <TooltipContent>
                   <p>La contraseña debe tener al menos 8 caracteres, una mayúscula,<br />una minúscula, un número y un caracter especial.</p>
                 </TooltipContent>
@@ -107,7 +107,7 @@ export const SignUpForm = () => {
             type="password"
             minLength={8}
             placeholder="Confirmar clave"
-            className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+            className="w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
             ref={confirmPasswordRef}
             required
           />
@@ -119,7 +119,7 @@ export const SignUpForm = () => {
           <textarea
             placeholder="Silent St."
             rows={2}
-            className="resize-none w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+            className="resize-none w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
             ref={directionRef}
             required
           />
@@ -128,7 +128,7 @@ export const SignUpForm = () => {
           </label>
         </div>
         <div className="relative h-11 w-full min-w-[200px]">
-          <Button type="submit" className="mt-2 bg-sky-500 hover:bg-sky-600 shadow-md w-full" disabled={isLoading}>Empezar</Button>
+          <Button type="submit" className="mt-2 bg-sky-500 hover:bg-sky-600 shadow-md w-full dark:text-neutral-200" disabled={isLoading}>Empezar</Button>
         </div>
         <hr />
         <div className="relative gap-x-2 h-11 w-full min-w-[200px]">

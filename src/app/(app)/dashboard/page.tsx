@@ -1,5 +1,4 @@
 
-// import SignIn from "@/components/auth/SignIn";
 import { getUserAuth } from "@/lib/auth/utils";
 
 export default async function Home() {

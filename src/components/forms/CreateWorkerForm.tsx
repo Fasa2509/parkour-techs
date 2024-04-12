@@ -44,7 +44,7 @@ export const CreateWorkerForm: FC = () => {
     };
 
     return (
-        <form className="flex flex-col gap-6 mx-auto rounded-md bg-white p-4 md:py-6 md:px-8 flex-1 max-w-[600px]" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-6 mx-auto rounded-md bg-white dark:bg-zinc-800 p-4 md:py-6 md:px-8 flex-1 max-w-[600px]" onSubmit={handleSubmit}>
             <h3 className="text-2xl font-bold text-center">
                 Crear trabajador
             </h3>
@@ -54,7 +54,7 @@ export const CreateWorkerForm: FC = () => {
                     name="email"
                     type="email"
                     placeholder="Correo"
-                    className="w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                    className="w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
                     required
                     value={formState.email}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setFormState((prevState) => ({ ...prevState, email: e.target.value }))}
@@ -70,7 +70,7 @@ export const CreateWorkerForm: FC = () => {
                         name="name"
                         type="text"
                         placeholder="Nombre/s"
-                        className="w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                        className="w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
                         required
                         value={formState.name}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => setFormState((prevState) => ({ ...prevState, name: e.target.value }))}
@@ -84,7 +84,7 @@ export const CreateWorkerForm: FC = () => {
                         name="lastname"
                         type="text"
                         placeholder="Apellido/s"
-                        className="w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                        className="w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
                         required
                         value={formState.lastname}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => setFormState((prevState) => ({ ...prevState, lastname: e.target.value }))}
@@ -100,7 +100,7 @@ export const CreateWorkerForm: FC = () => {
                     name="cedula"
                     type="number"
                     placeholder="11.111.111"
-                    className="w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                    className="w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
                     required
                     min={1_000_000}
                     value={formState.ci}
@@ -116,7 +116,7 @@ export const CreateWorkerForm: FC = () => {
                     name="phone"
                     type="text"
                     placeholder="04121111111"
-                    className="w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                    className="w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
                     required
                     value={formState.phone}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setFormState((prevState) => ({ ...prevState, phone: e.target.value }))}
@@ -126,14 +126,14 @@ export const CreateWorkerForm: FC = () => {
                 </label>
             </div>
 
-            <div className="relative h-11 w-full min-w-[200px] flex content-center gap-4">
+            <div className="relative z-10 h-11 w-full min-w-[200px] flex content-center gap-4">
                 <label className="self-center">Estado</label>
                 <div className="self-center">
                     <DropdownMenu>
-                        <DropdownMenuTrigger className="border-green-500 border-2 bg-white px-2 py-1 rounded-sm">{formState.status}</DropdownMenuTrigger>
+                        <DropdownMenuTrigger className="border-green-500 border-2 bg-white dark:bg-zinc-600 px-2 py-1 rounded-sm">{formState.status}</DropdownMenuTrigger>
                         <DropdownMenuContent>
                             {
-                                ValidStatus.map((status) => <DropdownMenuItem key={status} className={`px-2 py-1 bg-white outline-green-300 hover:bg-gray-200/80 ${formState.status === status ? "bg-green-400" : ""}`} onClick={() => setFormState((prevState) => ({ ...prevState, status }))}>{status}</DropdownMenuItem>)
+                                ValidStatus.map((status) => <DropdownMenuItem key={status} className={`px-2 py-1 bg-white dark:bg-zinc-600 dark:hover:bg-zinc-400 outline-green-300 hover:bg-gray-300/90 ${formState.status === status ? "bg-green-400" : ""}`} onClick={() => setFormState((prevState) => ({ ...prevState, status }))}>{status}</DropdownMenuItem>)
                             }
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -145,7 +145,7 @@ export const CreateWorkerForm: FC = () => {
                     name="hours"
                     type="number"
                     placeholder="100"
-                    className="w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                    className="w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
                     required
                     min={0}
                     value={formState.hours}
@@ -161,7 +161,7 @@ export const CreateWorkerForm: FC = () => {
                     name="salary"
                     type="number"
                     placeholder="1.000"
-                    className="w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                    className="w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
                     required
                     min={0}
                     value={formState.salary}
@@ -176,8 +176,8 @@ export const CreateWorkerForm: FC = () => {
                 <textarea
                     name="direction"
                     placeholder="Silent St."
-                    rows={4}
-                    className="resize-none w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                    rows={2}
+                    className="resize-none w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
                     required
                     onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setFormState((prevState) => ({ ...prevState, direction: e.target.value }))}
                     value={formState.direction}
@@ -190,7 +190,7 @@ export const CreateWorkerForm: FC = () => {
             <div className="relative h-11 w-full min-w-[200px] mt-4">
                 <Button type="submit"
                     disabled={isLoading}
-                    className="w-full border-2 border-transparent hover:border-green-300 text-lg hover:bg-white hover:text-green-300 bg-green-300 text-white"
+                    className="w-full border-2 text-lg border-green-300 hover:bg-white hover:text-green-300 bg-green-300 text-white dark:bg-green-500 dark:border-green-500 dark:hover:bg-transparent dark:hover:text-green-500"
                 >
                     Crear trabajador
                 </Button>

@@ -37,7 +37,7 @@ export const SignInForm = () => {
   };
 
   return (
-    <div className="flex-1 bg-white rounded-sm max-w-[550px]">
+    <div className="flex-1 bg-white dark:bg-zinc-800 rounded-sm max-w-[550px]">
       <form className="flex flex-col gap-6 p-4 md:p-8" onSubmit={handleSubmit}>
         <h1 className="text-2xl font-bold text-center">
           Iniciar sesión
@@ -47,7 +47,7 @@ export const SignInForm = () => {
           <input
             type="email"
             placeholder="correo@gmail.com"
-            className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+            className="w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
             ref={emailRef}
             required
           />
@@ -60,7 +60,7 @@ export const SignInForm = () => {
             type="password"
             minLength={8}
             placeholder="Clave"
-            className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+            className="w-full border-b bg-transparent pt-4 pb-1.5 text-sm font-normal outline outline-0 transition-all focus:border-gray-900 dark:focus:border-gray-300 focus:outline-0 disabled:border-0"
             ref={passwordRef}
             required
           />
@@ -69,7 +69,7 @@ export const SignInForm = () => {
           </label>
         </div>
         <div className="relative h-11 w-full min-w-[200px]">
-          <Button type="submit" className="bg-sky-500 hover:bg-sky-600 mt-2 shadow-md w-full" disabled={isLoading}>Ingresar</Button>
+          <Button type="submit" className="bg-sky-500 hover:bg-sky-600 dark:text-neutral-200 mt-2 shadow-md w-full" disabled={isLoading}>Ingresar</Button>
         </div>
         <hr />
         <div className="relative flex flex-col md:flex-row gap-x-2 h-11 w-full min-w-[200px]">

@@ -1,4 +1,5 @@
 "use client"
+import { useState } from "react";
 
 import {
     ColumnDef,
@@ -10,8 +11,7 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
-} from "@tanstack/react-table"
-
+} from "@tanstack/react-table";
 import {
     Table,
     TableBody,
@@ -19,11 +19,9 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 import { Button } from "./ui/button";
-import { Input } from "@/components/ui/input"
-import { PAGINATION_LIMIT } from "@/lib/api/Api";
-import { useState } from "react";
+import { Input } from "@/components/ui/input";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -52,7 +50,7 @@ export function DataTable<TData, TValue>({
             sorting,
             columnFilters
         },
-    })
+    });
 
     return (
         <div className="rounded-md border">
@@ -69,7 +67,7 @@ export function DataTable<TData, TValue>({
                 </div>
                 <div className="flex items-center py-4">
                     <Input
-                        placeholder="Filter nombres"
+                        placeholder="Filtrar nombres"
                         value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
                             table.getColumn("name")?.setFilterValue(event.target.value)
@@ -79,7 +77,7 @@ export function DataTable<TData, TValue>({
                 </div>
                 <div className="flex items-center py-4">
                     <Input
-                        placeholder="Filter cédula"
+                        placeholder="Filtrar cédula"
                         value={(table.getColumn("ci")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
                             table.getColumn("ci")?.setFilterValue(event.target.value)
@@ -89,7 +87,7 @@ export function DataTable<TData, TValue>({
                 </div>
                 <div className="flex items-center py-4">
                     <Input
-                        placeholder="Filter teléfono"
+                        placeholder="Filtrar teléfono"
                         value={(table.getColumn("phone")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
                             table.getColumn("phone")?.setFilterValue(event.target.value)

@@ -3,8 +3,8 @@ import { SignUpForm } from "@/components/auth/SignUpForm";
 export default function SignInPage() {
 
   return (
-    <section className="p-8 flex min-h-screen content-center justify-evenly bg-gradient-to-b from-green-200 to-green-400">
-      <section className="flex-1 flex-col p-6 hidden md:flex bg-white rounded-sm max-w-[560px]">
+    <section className="p-8 flex min-h-screen content-center justify-evenly bg-gradient-to-b from-green-200 to-green-400 dark:from-green-500 dark:to-green-700">
+      <section className="flex-1 flex-col p-6 hidden md:flex bg-white dark:bg-zinc-800 rounded-sm max-w-[560px]">
         <h1 className="from-neutral-700 text-3xl font-bold">
           Adéntrate en la gestión de equipos<br />
           Inicia en Parkour Techs
