@@ -23,6 +23,8 @@ export const POST = async (req: NextRequest) => {
 
         if (!user) throw new ValidationError("No se encontró usuario por ese correo", 404);
 
+        if (!user.password) throw new ValidationError("El usuario no tiene una clave establecida", 400);
+
         const checkPassword = await bcrypt.compare(body.password, user.password);
 
         if (!checkPassword) throw new AuthError("La clave es incorrecta", 401);
