@@ -22,6 +22,10 @@ RESEND_API_KEY=
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=
 
+# correos electronicos
+MAILER__USER=
+MAILER__PASS=
+
 # Google provider
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
